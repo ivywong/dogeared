@@ -1,4 +1,4 @@
-let infobox = document.getElementById("infobox");
+let infobox = document.getElementById('infobox');
 
 function displayActiveTab () {
   return browser.tabs
@@ -22,7 +22,7 @@ function displayActiveTab () {
     }); // TODO handle errors
 }
 
-function clearInfobox() {
+function clearInfobox () {
   while (infobox.firstChild) {
     infobox.firstChild.remove();
   }

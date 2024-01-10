@@ -7,11 +7,9 @@
     "icons": {
         "48": "icons/dogeared-48.png"
     },
-
     "permissions": [
         "activeTab"
     ],
-
     "action": {
         "default_icon": "icons/dogeared-32.png",
         "default_title": "dogeared",
