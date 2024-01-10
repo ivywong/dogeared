@@ -1,0 +1,10 @@
+html,
+body {
+    width: 300px;
+    margin: 1em;
+}
+
+.infobox {
+    font-family: sans-serif;
+    font-size: 1.5em;
+}

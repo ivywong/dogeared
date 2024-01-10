@@ -1,0 +1,20 @@
+{
+    "manifest_version": 3,
+    "name": "dogeared",
+    "version": "0.0.1",
+    "description": "Save your place on webpages, series, and so on.",
+    "homepage_url": "https://github.com/ivywong/dogeared",
+    "icons": {
+        "48": "icons/dogeared-48.png"
+    },
+
+    "permissions": [
+        "activeTab"
+    ],
+
+    "action": {
+        "default_icon": "icons/dogeared-32.png",
+        "default_title": "dogeared",
+        "default_popup": "popup/dogeared.html"
+    }
+}
