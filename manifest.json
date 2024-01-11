@@ -5,13 +5,14 @@
     "description": "Save your place on webpages, series, and so on.",
     "homepage_url": "https://github.com/ivywong/dogeared",
     "icons": {
-        "48": "icons/dogeared-48.png"
+        "48": "icons/logo.svg",
+        "96": "icons/logo.svg"
     },
     "permissions": [
         "activeTab"
     ],
     "action": {
-        "default_icon": "icons/dogeared-32.png",
+        "default_icon": "icons/logo.svg",
         "default_title": "dogeared",
         "default_popup": "popup/dogeared.html"
     }

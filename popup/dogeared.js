@@ -1,6 +1,6 @@
 let infobox = document.getElementById('infobox');
 
-function displayActiveTab () {
+const displayActiveTab = () => {
   return browser.tabs
     .query({ active: true, currentWindow: true })
     .then(tabs => {
@@ -20,13 +20,13 @@ function displayActiveTab () {
         console.log('something weird happened! ', tabs);
       }
     }); // TODO handle errors
-}
+};
 
-function clearInfobox () {
+const clearInfobox = () => {
   while (infobox.firstChild) {
     infobox.firstChild.remove();
   }
-}
+};
 
 document.getElementById('reload').addEventListener('click', e => {
   console.log(e);
