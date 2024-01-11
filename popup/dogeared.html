@@ -8,8 +8,25 @@
 
   <body>
     <h1>Hello World!</h1>
-    <div id="infobox"></div>
-    <button id="reload">Get Active Tab Info</button>
+    <ol id="series-list">
+      <li class="series-item" data-series-id="test">
+        <h2 class="series-name" data-series-name="Series Name"></h2>
+        <div class="series-info">
+          <p class="mark-name" data-mark-name="Page Name"></p>
+          <p class="mark-url" data-mark-url="https://example.com"></p>
+        </div>
+        <button class="series-update" data-series-id="test">
+          Save Current Page
+        </button>
+      </li>
+      <series-li
+        class="series-item"
+        series-name="test series name"
+        mark-name="mark name"
+        mark-url="https://example.com"
+      ></series-li>
+    </ol>
+
     <script src="dogeared.js"></script>
   </body>
 </html>

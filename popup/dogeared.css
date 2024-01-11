@@ -1,10 +1,32 @@
-html,
-body {
-  width: 300px;
-  margin: 1em;
+:root {
+  max-width: 400px;
 }
 
-.infobox {
+html,
+body {
+  max-width: 90%;
+  margin: 0.2rem auto;
   font-family: sans-serif;
-  font-size: 1.5em;
+  font-size: 1em;
+}
+
+#series-list {
+  padding: 0;
+}
+
+.series-item {
+  list-style: none;
+  margin: 0.2rem auto;
+}
+
+[data-series-name]::before {
+  content: attr(data-series-name);
+}
+
+[data-mark-name]::before {
+  content: attr(data-mark-name);
+}
+
+[data-mark-url]::before {
+  content: attr(data-mark-url);
 }
