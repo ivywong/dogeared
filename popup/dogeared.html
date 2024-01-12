@@ -8,8 +8,11 @@
 
   <body>
     <h1>Hello World!</h1>
-    <ol id="series-list"></ol>
 
-    <script src="dogeared.js"></script>
+    <button id="new-series-button" data-dog-id="new-series-button">Add new series for current page</button>
+    <button id="remove-all-button" data-dog-id="remove-all-button">Clear All</button>
+    <ol id="series-list" data-dog-id="series-list"></ol>
+
+    <script type="module" src="app.js"></script>
   </body>
 </html>

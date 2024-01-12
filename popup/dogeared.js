@@ -1,38 +1,3 @@
-class Series {
-  constructor (name) {
-    this.name = name;
-    this.marks = [];
-    this.id = crypto.randomUUID(); // TODO: check compatibility
-    this.validation_prefix = '';
-
-    const now = Date.now();
-    this.last_access_time = now;
-    this.creation_time = now;
-  }
-
-  get latestMark() {
-    if (this.marks.length == 0) {
-      return null;
-    }
-    return this.marks[this.marks.length - 1];
-  }
-
-  addMark(mark) {
-    // todo: additional validation
-    this.marks.push(mark);
-  }
-}
-
-class Mark {
-  constructor (title, url) {
-    this.title = title;
-    this.url = url;
-    this.creation_time = Date.now();
-}
-
-// TODO: validate URL on set
-}
-
 // TODO: probably unnecessary
 class SeriesListItem extends HTMLElement {
   static get observedAttributes() {
@@ -153,11 +118,8 @@ function renderSeries(seriesData) {
 }
 
 function init() {
-  customElements.define('series-li', SeriesListItem);
-
-  let series = generateTestSeries();
-  renderSeries(series);
-  addUpdateButtonEventListeners();
+  const SeriesData = new SeriesStore('dogeared');
+  console.log(SeriesData);
 
   console.log('loaded');
 }
