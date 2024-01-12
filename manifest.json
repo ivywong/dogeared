@@ -12,6 +12,7 @@
         "activeTab"
     ],
     "action": {
+        "default_area": "navbar",
         "default_icon": "icons/logo.svg",
         "default_title": "dogeared",
         "default_popup": "popup/dogeared.html"

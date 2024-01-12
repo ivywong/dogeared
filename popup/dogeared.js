@@ -9,6 +9,18 @@ class Series {
     this.last_access_time = now;
     this.creation_time = now;
   }
+
+  get latestMark() {
+    if (this.marks.length == 0) {
+      return null;
+    }
+    return this.marks[this.marks.length - 1];
+  }
+
+  addMark(mark) {
+    // todo: additional validation
+    this.marks.push(mark);
+  }
 }
 
 class Mark {
@@ -16,12 +28,47 @@ class Mark {
     this.title = title;
     this.url = url;
     this.creation_time = Date.now();
-  }
 }
 
+// TODO: validate URL on set
+}
+
+// TODO: probably unnecessary
 class SeriesListItem extends HTMLElement {
-  static get observedAttributes () {
+  static get observedAttributes() {
     return ['series-id', 'series-name', 'mark-name', 'mark-url'];
+  }
+
+  get updateButton() {
+    return this.shadowRoot.querySelector('.series-update');
+  }
+
+  /**
+   * @param {string} id
+   */
+  set seriesId(id) {
+    this.setAttribute('series-id', id);
+  }
+
+  /**
+   * @param {string} name
+   */
+  set seriesName(name) {
+    this.setAttribute('series-name', name);
+  }
+
+  /**
+   * @param {string} name
+   */
+  set markName(name) {
+    this.setAttribute('mark-name', name);
+  }
+
+  /**
+   * @param {string} url
+   */
+  set markUrl(url) {
+    this.setAttribute('mark-url', url);
   }
 
   constructor() {
@@ -35,11 +82,18 @@ class SeriesListItem extends HTMLElement {
         <p class="mark-url">${this.getAttribute('mark-url')}</p>
       </div>
       <button class="series-update" data-series-id="${this.getAttribute(
-        'mark-url'
+        'series-id'
       )}">
         Save Current Page
       </button>
     `;
+  }
+
+  update() {
+    this.seriesId = this.series.id;
+    this.seriesName = this.series.name;
+    this.markName = this.series.latestMark.title;
+    this.markUrl = this.series.latestMark.url;
   }
 
   getUpdateButton() {
@@ -47,14 +101,12 @@ class SeriesListItem extends HTMLElement {
   }
 
   attributeChangedCallback (name, oldValue, newValue) {
-    if (SeriesListItem.observedAttributes.includes(name)) {
+    if (SeriesListItem.observedAttributes.includes(name) && oldValue !== newValue) {
       this.shadowRoot.querySelector(`.${name}`).textContent = newValue;
       console.log(`Attribute ${name} changed from ${oldValue} to ${newValue}`);
     }
   }
 }
-
-customElements.define('series-li', SeriesListItem);
 
 async function getActiveTab() {
   let tabs = await browser.tabs.query({ active: true, currentWindow: true });
@@ -63,20 +115,51 @@ async function getActiveTab() {
   }
 }
 
-function addEventListeners() {
+function addUpdateButtonEventListeners() {
   console.log(document.querySelectorAll('series-li'));
-  const seriesList = document
+  document
     .querySelectorAll('series-li')
     .forEach(seriesItem => {
       seriesItem.getUpdateButton().addEventListener('click', async e => {
         const { title, url } = await getActiveTab();
-        const clicked = e.target;
-        console.log('id: ', clicked.dataset.seriesId);
-        seriesItem.setAttribute('mark-name', title);
-        seriesItem.setAttribute('mark-url', url);
+        // q: does seriesItem continue to refer to the SeriesListItem?
+        seriesItem.series.addMark(new Mark(title, url));
+        console.log(seriesItem.series);
+        seriesItem.update();
       });
     });
 }
 
-addEventListeners();
-console.log('loaded');
+function generateTestSeries() {
+  const interpreters = new Series("Crafting Interpreters");
+  interpreters.addMark(new Mark("Scanning", "http://craftinginterpreters.com/scanning.html#lexemes-and-tokens"));
+
+  const blender = new Series("Grant Abbitt - Blender 3 - Complete Beginners Guide");
+  blender.addMark(new Mark("Blender 3 - Complete Beginners Guide - Part 2 - Materials & Rendering", "https://www.youtube.com/watch?v=g5lHlUB66r0&list=PLn3ukorJv4vuU3ILv3g3xnUyEGOQR-D8J&index=2"));
+  blender.addMark(new Mark("Blender 3 - Complete Beginners Guide - Part 3 - The Old Man", "https://www.youtube.com/watch?v=zt2ldQ23uOE&list=PLn3ukorJv4vuU3ILv3g3xnUyEGOQR-D8J&index=3"));
+
+  return [interpreters, blender];
+}
+
+function renderSeries(seriesData) {
+  const seriesList = document.getElementById("series-list");
+
+  for (const series of seriesData) {
+    const seriesLI = document.createElement("series-li");
+    seriesLI.series = series;
+    seriesLI.update();
+    seriesList.appendChild(seriesLI);
+  }
+}
+
+function init() {
+  customElements.define('series-li', SeriesListItem);
+
+  let series = generateTestSeries();
+  renderSeries(series);
+  addUpdateButtonEventListeners();
+
+  console.log('loaded');
+}
+
+init();
