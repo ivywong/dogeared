@@ -14,12 +14,12 @@ const App = {
     init() {
         SeriesDataStore.addEventListener("save", App.render);
 
-        App.$.addSeriesButton.addEventListener("click", async (e) => {
+        App.$.addSeriesButton.addEventListener("click", async () => {
             console.log("clicked add series button!");
-            const { title, url } = await utils.getActiveTab();
-            SeriesDataStore.addSeries({ seriesName: "New Series", markTitle: title, markURL: url });
+            const {title, url} = await utils.getActiveTab();
+            SeriesDataStore.addSeries({seriesName: "New Series", markTitle: title, markURL: url});
         });
-        App.$.removeAllButton.addEventListener("click", async (e) => {
+        App.$.removeAllButton.addEventListener("click", async () => {
             console.log("clicked remove all button!");
             SeriesDataStore.removeAll();
         });
