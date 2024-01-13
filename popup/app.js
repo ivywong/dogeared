@@ -7,6 +7,7 @@ const SeriesDataStore = new SeriesStore("dogeared");
 const App = {
     // $ is used to organize DOM-related properties/methods
     $: {
+        seriesInput: document.querySelector('[data-dog-id="series-input"]'),
         addSeriesButton: document.querySelector('[data-dog-id="new-series-button"]'),
         removeAllButton: document.querySelector('[data-dog-id="remove-all-button"]'),
         seriesList: document.querySelector('[data-dog-id="series-list"]'),
@@ -16,8 +17,16 @@ const App = {
 
         App.$.addSeriesButton.addEventListener("click", async () => {
             console.log("clicked add series button!");
+            const userInput = App.$.seriesInput.value;
             const {title, url} = await utils.getActiveTab();
-            SeriesDataStore.addSeries({seriesName: "New Series", markTitle: title, markURL: url});
+
+            if (userInput !== "") {
+                SeriesDataStore.addSeries({seriesName: userInput, markTitle: title, markURL: url});
+                App.$.seriesInput.value = "";
+            } else {
+                console.log("No series name!");
+                // TODO: prompt user for name, maybe using input
+            }
         });
         App.$.removeAllButton.addEventListener("click", async () => {
             console.log("clicked remove all button!");
@@ -33,9 +42,14 @@ const App = {
             <p class="mark-title">${series.latestMark.title}</p>
             <p class="mark-url">${series.latestMark.url}</p>
         </div>
-        <button class="add-mark" data-dog-id="add-mark">
-            Save Current Page
-        </button>
+        <div class="series-actions">
+            <button class="add-mark" data-dog-id="add-mark">
+                Overwrite 
+            </button>
+            <button class="load-mark" data-dog-id="load-mark">
+                Load
+            </button>
+        </div>
         `;
 
         const li = document.createElement("li");

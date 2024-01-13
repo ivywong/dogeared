@@ -19,6 +19,10 @@ body {
   margin: 0.2rem auto;
 }
 
+#series-input {
+  width: 100%;
+}
+
 [data-series-name]::before {
   content: attr(data-series-name);
 }
