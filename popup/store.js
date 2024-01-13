@@ -69,7 +69,7 @@ export default class SeriesStore extends EventTarget {
         const s = new Series(seriesName);
         s.addMark(new Mark(markTitle, markURL));
         console.log(s);
-        this.series.push(s);
+        this.series.splice(0, 0, s);
         this._save();
     }
     remove({ seriesId }) {
@@ -85,9 +85,8 @@ export default class SeriesStore extends EventTarget {
         this.series = this.series.map((s) => s.id === series.id ? series : s);
         this._save();
     }
-    addMark({ seriesId, markTitle, markURL }) {
-        const s = this.getSeries(seriesId);
-        s.addMark(new Mark(markTitle, markURL));
-        this.update(s);
+    addMark({ series, markTitle, markURL }) {
+        series.addMark(new Mark(markTitle, markURL));
+        this.update(series);
     }
 }

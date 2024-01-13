@@ -29,11 +29,37 @@ const App = {
             }
         });
         App.$.removeAllButton.addEventListener("click", async () => {
-            console.log("clicked remove all button!");
             SeriesDataStore.removeAll();
         });
 
+        App.bindSeriesItemEvents();
         this.render();
+    },
+    seriesItemEvent(event, selector, handler) {
+        utils.delegate(App.$.seriesList, selector, event, (e) => {
+            let el = e.target.closest("[data-series-id]");
+            console.log(el);
+            handler(SeriesDataStore.getSeries(el.dataset.seriesId), el, e);
+        });
+    },
+    bindSeriesItemEvents() {
+        App.seriesItemEvent("click", '[data-dog-id="add-mark"]', async (series) => {
+            const {title, url} = await utils.getActiveTab();
+            if (title !== undefined && url !== undefined) {
+                SeriesDataStore.addMark({series, markTitle: title, markURL: url});
+            } else {
+                console.log("current tab changed, not adding mark");
+            }
+        });
+        App.seriesItemEvent("click", '[data-dog-id="load-mark"]', (series) => {
+            if (series.latestMark !== null) {
+                browser.tabs.create({ url: series.latestMark.url });
+                // TODO: configurable setting, but leaving it open may
+                // cause the active tab undefined bug
+                window.close();
+            }
+        });
+
     },
     createSeriesItem(series) {
         const seriesHtml = `
@@ -44,7 +70,7 @@ const App = {
         </div>
         <div class="series-actions">
             <button class="add-mark" data-dog-id="add-mark">
-                Overwrite 
+                Overwrite
             </button>
             <button class="load-mark" data-dog-id="load-mark">
                 Load
@@ -54,6 +80,7 @@ const App = {
 
         const li = document.createElement("li");
         li.classList.add("series-item");
+        li.setAttribute("data-series-id", series.id);
         li.innerHTML = seriesHtml;
         console.log(li);
         return li;
