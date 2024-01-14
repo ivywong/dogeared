@@ -21,6 +21,7 @@ const App = {
             const {title, url} = await utils.getActiveTab();
 
             if (userInput !== "") {
+                // TODO: sanitize input
                 SeriesDataStore.addSeries({seriesName: userInput, markTitle: title, markURL: url});
                 App.$.seriesInput.value = "";
             } else {
@@ -59,6 +60,9 @@ const App = {
                 window.close();
             }
         });
+        App.seriesItemEvent("click", '[data-dog-id="remove-series"]', (series) => {
+            SeriesDataStore.removeSeries({ seriesId: series.id });
+        });
 
     },
     createSeriesItem(series) {
@@ -74,6 +78,9 @@ const App = {
             </button>
             <button class="load-mark" data-dog-id="load-mark">
                 Load
+            </button>
+            <button class="remove-series" data-dog-id="remove-series">
+                Remove
             </button>
         </div>
         `;
@@ -92,4 +99,3 @@ const App = {
 }
 
 App.init();
-// SeriesData.removeAll();

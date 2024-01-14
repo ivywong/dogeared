@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "dogeared",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Save your place on webpages, series, and so on.",
     "homepage_url": "https://github.com/ivywong/dogeared",
     "icons": {

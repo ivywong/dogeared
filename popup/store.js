@@ -72,7 +72,7 @@ export default class SeriesStore extends EventTarget {
         this.series.splice(0, 0, s);
         this._save();
     }
-    remove({ seriesId }) {
+    removeSeries({ seriesId }) {
         // consider splicing if this is slow
         this.series = this.series.filter((s) => s.id !== seriesId);
         this._save();
