@@ -1,3 +1,5 @@
+import { saveFile } from "./utils.js";
+
 class Series {
     constructor(name) {
         this.name = name;
@@ -58,7 +60,11 @@ export default class SeriesStore extends EventTarget {
         this.all = () => this.series;
     }
     _readStorage() {
-        const parsed = JSON.parse(window.localStorage.getItem(this.localStorageKey) || "[]");
+        let localJson = window.localStorage.getItem(this.localStorageKey) || "[]";
+        this._loadJSON(localJson);
+    }
+    _loadJSON(seriesJSON) {
+        const parsed = JSON.parse(seriesJSON);
         this.series = parsed.map((s) => {
             const ns = Object.create(Series.prototype, Object.getOwnPropertyDescriptors(s));
             ns.marks = s.marks.map((m) => Object.create(Mark.prototype, Object.getOwnPropertyDescriptors(m)));
@@ -92,5 +98,15 @@ export default class SeriesStore extends EventTarget {
     addMark({ series, markTitle, markURL }) {
         series.addMark(new Mark(markTitle, markURL));
         this.update(series);
+    }
+    exportJSON() {
+        saveFile(
+            JSON.stringify(this.series), 
+            `dogeared-series-data-${Date.now()}.json`, 
+            `application/json`
+        );
+    }
+    importJSON(json) {
+        this._loadJSON(json);
     }
 }

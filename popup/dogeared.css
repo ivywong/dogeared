@@ -22,15 +22,3 @@ body {
 #series-input {
   width: 100%;
 }
-
-[data-series-name]::before {
-  content: attr(data-series-name);
-}
-
-[data-mark-name]::before {
-  content: attr(data-mark-name);
-}
-
-[data-mark-url]::before {
-  content: attr(data-mark-url);
-}

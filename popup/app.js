@@ -11,8 +11,13 @@ const App = {
         addSeriesButton: document.querySelector('[data-dog-id="new-series-button"]'),
         removeAllButton: document.querySelector('[data-dog-id="remove-all-button"]'),
         seriesList: document.querySelector('[data-dog-id="series-list"]'),
+        importButton: document.querySelector('[data-dog-id="import-button"]'), 
+        exportButton: document.querySelector('[data-dog-id="export-button"]'),
+        importFilePicker: document.querySelector('[data-dog-id="import-file"]'),  
     },
     init() {
+        App.$.importFilePicker.style.display = "none";
+
         SeriesDataStore.addEventListener("save", App.render);
 
         App.$.addSeriesButton.addEventListener("click", async () => {
@@ -28,6 +33,22 @@ const App = {
                 console.log("No series name!");
                 // TODO: prompt user for name, maybe using input
             }
+        });
+
+        App.$.importFilePicker.addEventListener("input", (e) => {
+            console.log(`got ${App.$.importFilePicker.value}`);
+            // TODO: implement import
+        });
+        App.$.importButton.addEventListener("click", (e) => {
+            if (App.$.importFilePicker.style.display === "none") {
+                App.$.importFilePicker.style.display = "inline-block"; 
+            } else {
+                App.$.importFilePicker.style.display = "none";
+            }
+        });
+        App.$.exportButton.addEventListener("click", (e) => {
+            console.log("export");
+            SeriesDataStore.exportJSON();
         });
 
         App.$.seriesInput.addEventListener("input", (e) => {
