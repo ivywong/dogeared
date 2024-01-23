@@ -4,9 +4,17 @@ export async function getActiveTab() {
         console.log(tabs);
         return tabs[0];
     } else {
-        console.log("something strange happened while getitng tabs");
+        console.log("something strange happened while getting tabs");
         console.log(tabs);
         return null;
+    }
+}
+
+export function debounce(func, timeout = 300) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => { func.apply(this, args); }, timeout);
     }
 }
 
@@ -15,7 +23,7 @@ export async function getActiveTab() {
 // this is so that we don't keep recreating event listeners on render
 // https://frontendmasters.com/blog/vanilla-javascript-todomvc/#2-event-delegation
 export const delegate = (el, selector, event, handler) => {
-    el.addEventListener(event, e => {
+    el.addEventListener(event, (e) => {
         if (e.target.matches(selector)) {
             handler(e, el);
         }

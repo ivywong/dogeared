@@ -29,6 +29,14 @@ const App = {
                 // TODO: prompt user for name, maybe using input
             }
         });
+
+        App.$.seriesInput.addEventListener("input", (e) => {
+            utils.debounce(() => {
+                const userInput = App.$.seriesInput.value;
+                let filteredSeries = SeriesDataStore.filterSeries(userInput.toLowerCase());
+                this.renderView(filteredSeries);
+            }, 300)();
+        });
         App.$.removeAllButton.addEventListener("click", async () => {
             SeriesDataStore.removeAll();
         });
@@ -82,8 +90,7 @@ const App = {
             <button class="remove-series" data-dog-id="remove-series">
                 Remove
             </button>
-        </div>
-        `;
+        </div>`;
 
         const li = document.createElement("li");
         li.classList.add("series-item");
@@ -93,8 +100,10 @@ const App = {
         return li;
     },
     render() {
-        console.log("rendering");
         App.$.seriesList.replaceChildren(...SeriesDataStore.series.map((s) => App.createSeriesItem(s)));
+    },
+    renderView(seriesView) {
+        App.$.seriesList.replaceChildren(...seriesView.map((s) => App.createSeriesItem(s)));
     }
 }
 

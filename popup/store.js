@@ -49,6 +49,12 @@ export default class SeriesStore extends EventTarget {
         );
 
         this.getSeries = (id) => this.series.find((s) => s.id === id);
+        this.filterSeries = (str) => {
+            return this.series.filter((seriesItem) => {
+                return seriesItem.name.toLowerCase().includes(str) || 
+                    seriesItem.latestMark.title.toLowerCase().includes(str);
+            });
+        };
         this.all = () => this.series;
     }
     _readStorage() {
@@ -58,7 +64,6 @@ export default class SeriesStore extends EventTarget {
             ns.marks = s.marks.map((m) => Object.create(Mark.prototype, Object.getOwnPropertyDescriptors(m)));
             return ns;
         });
-        console.log(this.series);
     }
     _save() {
         window.localStorage.setItem(this.localStorageKey, JSON.stringify(this.series));
@@ -68,7 +73,6 @@ export default class SeriesStore extends EventTarget {
     addSeries({ seriesName, markTitle, markURL }) {
         const s = new Series(seriesName);
         s.addMark(new Mark(markTitle, markURL));
-        console.log(s);
         this.series.splice(0, 0, s);
         this._save();
     }
